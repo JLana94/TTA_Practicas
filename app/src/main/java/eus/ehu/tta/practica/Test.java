@@ -14,6 +14,19 @@ import java.util.ListIterator;
 
 public class Test {
     private String pregunta;
+    private String advise;
+    private List<Choice> choices;
+
+    public String getAdvise() {
+        return "<html><body>The manifest describes the <b>components of the application:</b> the activities, services, broadcast receivers, and content providers that the application is composed of. It names the classes that implement each of the component and publishes their capabilities (for example, which Intent messages they can handle). These declarations let the Android system know what the components are and under what conditions they can be launched.</body></html>";
+        //return advise;
+    }
+
+    public void setAdvise(String advise) {
+        this.advise = advise;
+    }
+
+
 
     public String getPregunta() {
         //return pregunta;
@@ -62,5 +75,5 @@ public class Test {
         this.choices = choices;
     }
 
-    private List<Choice> choices;
+
 }
