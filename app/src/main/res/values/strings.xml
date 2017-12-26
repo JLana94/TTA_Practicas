@@ -14,13 +14,10 @@
     <string name="botonTest">Nuevo test</string>
     <string name="botonEjercicio">Nuevo ejercicio</string>
     <string name="botonSeguimiento">Seguimiento</string>
-    <string name="preguntaTest">¿Cuál de las siguientes opciones NO se indica en el fichero de manifiesto de la app?</string>
-    <string name="respuesta1">Versión de la aplicación</string>
-    <string name="respuesta2">Listado de componentes de la aplicación</string>
-    <string name="respuesta3">Opciones del menú de ajustes</string>
-    <string name="respuesta4">Nivel mínimo de la API Android requerida</string>
-    <string name="respuesta5">Nombre del paquete java de la aplicación</string>
-    <string name="preguntaEjer">Explica cómo aplicarías el patrón de diseño MVP en el desarrollo de una app para Android</string>
+    <string name="botonSacarFoto">Sacar foto</string>
+    <string name="botonSubirFichero">Subir fichero</string>
+    <string name="botonGrabarAudio">Grabar audio</string>
+    <string name="botonGrabarVideo">Grabar video</string>
     <string name="botonEnviar">Enviar</string>
     <string name="botonAyuda">Ver ayuda</string>
     <string name="toastAcierto">¡Correcto!</string>

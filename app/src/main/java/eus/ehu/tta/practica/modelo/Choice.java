@@ -1,4 +1,4 @@
-package eus.ehu.tta.practica;
+package eus.ehu.tta.practica.modelo;
 
 /**
  * Created by josu on 26/12/17.
