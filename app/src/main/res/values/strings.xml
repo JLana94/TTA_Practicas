@@ -7,8 +7,8 @@
     <string name="botonLogin">Acceder</string>
     <string name="loginTitle">Login</string>
     <string name="menuTitle">Menu</string>
-    <string name="testTitle">Test</string>
-    <string name="ejercicioTitle">Ejercicio</string>
+    <string name="testTitle">Nuevo Test</string>
+    <string name="ejercicioTitle">Nuevo Ejercicio</string>
     <string name="welcome">Bienvenido </string>
     <string name="leccion">Leccion 1: Introducción</string>
     <string name="botonTest">Nuevo test</string>
