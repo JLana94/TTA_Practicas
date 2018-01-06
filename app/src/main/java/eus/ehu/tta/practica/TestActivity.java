@@ -5,13 +5,17 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import eus.ehu.tta.practica.modelo.Choice;
 import eus.ehu.tta.practica.modelo.Test;
@@ -23,6 +27,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     int correct;
     int selected;
+    LinearLayout layout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                 correct=i;
             i++;
         }
+        layout= findViewById(R.id.activity_test);
     }
 
 
@@ -109,7 +115,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                 web.loadData(ayuda,"text/html",null);
                 web.setBackgroundColor(Color.TRANSPARENT);
                 web.setLayerType(WebView.LAYER_TYPE_SOFTWARE,null);
-                LinearLayout layout= findViewById(R.id.activity_test);
                 layout.addView(web);
             }
 
@@ -120,11 +125,42 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(mimeType.contains("video"))
         {
+            showVideo(ayuda);
 
         }
 
 
 
+
+    }
+
+    private void showVideo(String ayuda) {
+        VideoView video = new VideoView(this);
+        video.setVideoURI(Uri.parse(ayuda));
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        video.setLayoutParams(params);
+
+        MediaController controller=new MediaController(this){
+            @Override
+            public void hide()
+            {
+
+            }
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent event)
+            {
+                if (event.getKeyCode()==KeyEvent.KEYCODE_BACK)
+                {
+                    finish();
+                }
+                return super.dispatchKeyEvent(event);
+            }
+        };
+        controller.setAnchorView(video);
+        video.setMediaController(controller);
+
+        layout.addView(video);
+        video.start();
 
     }
 }
