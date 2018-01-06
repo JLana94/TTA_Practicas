@@ -19,6 +19,7 @@ import android.widget.VideoView;
 
 import eus.ehu.tta.practica.modelo.Choice;
 import eus.ehu.tta.practica.modelo.Test;
+import eus.ehu.tta.practica.presentacion.AudioPlayer;
 import eus.ehu.tta.practica.presentacion.Data;
 
 import static android.widget.Toast.LENGTH_SHORT;
@@ -121,7 +122,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(mimeType.contains("audio"))
         {
-
+           // AudioPlayer player=new AudioPlayer(view, onStop());
         }
         if(mimeType.contains("video"))
         {
