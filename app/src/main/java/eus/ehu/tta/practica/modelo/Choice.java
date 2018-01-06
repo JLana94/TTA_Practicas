@@ -7,6 +7,25 @@ package eus.ehu.tta.practica.modelo;
 public class Choice {
     private boolean correct;
 
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public String getAyuda() {
+        return ayuda;
+    }
+
+    public void setAyuda(String ayuda) {
+        this.ayuda = ayuda;
+    }
+
+    private String mimeType;
+    private String ayuda;
+
     public boolean isCorrect() {
         return correct;
     }
