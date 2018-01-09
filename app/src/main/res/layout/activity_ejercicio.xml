@@ -29,11 +29,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/botonGrabarAudio"
-        android:onClick="grabarAudio"/>
+        android:onClick="subirAudio"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/botonGrabarVideo"
-        android:onClick="grabarVideo"/>
+        android:onClick="subirVideo"/>
 
 </LinearLayout>

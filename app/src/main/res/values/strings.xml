@@ -24,5 +24,7 @@
     <string name="toastFallo">¡Has fallado!</string>
     <string name="sinCamara">Lo siento, tú teléfono no tiene cámara</string>
     <string name="sinAppCamara">Lo siento, no tienes ninguna app que use la cámara</string>
+    <string name="sinMicro">Lo siento, tú teléfono no tiene microfono</string>
+    <string name="sinAppMicro">Lo siento, no tienes ninguna app que grabe audio</string>
     <string name="permisoDenegado">Lo siento, no tengo los permisos necesarios</string>
 </resources>
