@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RadioButton;
@@ -100,6 +101,8 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     public void verAyuda(View view) throws IOException {
         Data data=new Data();
+        Button botonAyuda=findViewById(R.id.botonAyuda);
+        botonAyuda.setEnabled(false);
         Test test=data.getTest();
         String mimeType=test.getChoices().get(selected).getMimeType();
         String ayuda=test.getChoices().get(selected).getAyuda();
