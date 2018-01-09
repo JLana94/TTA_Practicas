@@ -5,10 +5,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +35,6 @@ public class EjercicioActivity extends AppCompatActivity {
     private final int VIDEO_REQUEST_CODE=2;
     private final int AUDIO_REQUEST_CODE=3;
     private final int READ_REQUEST_CODE=4;
-    private final int FOTO=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +49,14 @@ public class EjercicioActivity extends AppCompatActivity {
     }
 
     public void subirFoto(View view){
-        checkPermission(FOTO);
+        checkPermission();
     }
 
     public void subirFichero(View view){
+        Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        startActivityForResult(intent,READ_REQUEST_CODE);
 
     }
     public void subirAudio(View view){
@@ -113,17 +120,17 @@ public class EjercicioActivity extends AppCompatActivity {
         }
     }
 
-    private void checkPermission(int type)
+    private void checkPermission()
     {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
-            if(type==FOTO)
-            {
-                sacarFoto();
-            }
+
+
+            sacarFoto();
+
         }
         else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, type);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICTURE_REQUEST_CODE);
 
             }
     }
@@ -132,10 +139,9 @@ public class EjercicioActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if(requestCode==FOTO)
-            {
-                sacarFoto();
-            }
+
+            sacarFoto();
+
         } else {
             Toast.makeText(this,R.string.permisoDenegado,Toast.LENGTH_SHORT).show();// Permission was denied. Display an error message.
         }
@@ -150,6 +156,7 @@ public class EjercicioActivity extends AppCompatActivity {
         }
         switch (requestCode){
             case READ_REQUEST_CODE:
+                mostrarDatos(data.getData());
             case VIDEO_REQUEST_CODE:
             case AUDIO_REQUEST_CODE:
             //    sendFile(data.getData());
@@ -160,5 +167,34 @@ public class EjercicioActivity extends AppCompatActivity {
 
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void mostrarDatos(Uri uri)
+     {
+         String nombre="ERROR!";
+         String tamano="0";
+
+         Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
+
+         try {
+
+             if (cursor != null && cursor.moveToFirst()) {
+
+                 nombre = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+
+                 int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+                 tamano = null;
+                 if (!cursor.isNull(sizeIndex)) {
+                     tamano = cursor.getString(sizeIndex);
+                 } else {
+                     tamano = "Unknown";
+                 }
+             }
+         } finally {
+             cursor.close();
+         }
+         Toast.makeText(this,"Fichero: "+nombre+"\nTamaño: "+tamano+" bytes",Toast.LENGTH_SHORT).show();
+
+
+     }
 
 }
