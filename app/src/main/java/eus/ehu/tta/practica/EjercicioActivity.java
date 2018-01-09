@@ -132,7 +132,7 @@ public class EjercicioActivity extends AppCompatActivity {
         else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICTURE_REQUEST_CODE);
 
-            }
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -167,7 +167,6 @@ public class EjercicioActivity extends AppCompatActivity {
 
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void mostrarDatos(Uri uri)
      {
          String nombre="ERROR!";
@@ -191,6 +190,7 @@ public class EjercicioActivity extends AppCompatActivity {
              }
          } finally {
              cursor.close();
+
          }
          Toast.makeText(this,"Fichero: "+nombre+"\nTamaño: "+tamano+" bytes",Toast.LENGTH_SHORT).show();
 

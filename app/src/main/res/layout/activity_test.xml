@@ -11,26 +11,29 @@
     <TextView
         android:id="@+id/testQuestion"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+
     <RadioGroup
         android:id="@+id/testChoices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"/>
+        android:orientation="vertical" />
 
     <Button
         android:id="@+id/botonEnviar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:onClick="enviar"
         android:text="@string/botonEnviar"
-        android:onClick="enviar"/>
+        android:visibility="invisible" />
+
     <Button
         android:id="@+id/botonAyuda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:baselineAligned="false"
+        android:onClick="verAyuda"
         android:text="@string/botonAyuda"
-        android:onClick="verAyuda"/>
+        android:visibility="invisible" />
 
 </LinearLayout>

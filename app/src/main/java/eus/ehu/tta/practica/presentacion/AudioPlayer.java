@@ -19,7 +19,7 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
     private MediaPlayer player;
     private MediaController controller;
 
-    /*public AudioPlayer(View view, final Runnable onExit)
+    public AudioPlayer(View view, final Runnable onExit)
     {
         this.view=view;
         player=new MediaPlayer();
@@ -34,9 +34,7 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
                 return super.dispatchKeyEvent(event);
             }
         };
-    }*/
-
-    //DUDA: ese contructor que tengo arriba recibe un objeto que implementa el interfaz Runnable que sirve para ejecutar un thread ¿¿porque??
+    }
 
     public void setAudioUri (Uri uri) throws IOException{
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -99,17 +97,17 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
 
     @Override
     public boolean canPause() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekBackward() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekForward() {
-        return false;
+        return true;
     }
 
     @Override

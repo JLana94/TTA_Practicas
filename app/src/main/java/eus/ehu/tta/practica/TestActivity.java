@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.io.IOException;
+
 import eus.ehu.tta.practica.modelo.Choice;
 import eus.ehu.tta.practica.modelo.Test;
 import eus.ehu.tta.practica.presentacion.AudioPlayer;
@@ -96,7 +98,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.botonEnviar).setVisibility(View.VISIBLE);
     }
 
-    public void verAyuda(View view) {
+    public void verAyuda(View view) throws IOException {
         Data data=new Data();
         Test test=data.getTest();
         String mimeType=test.getChoices().get(selected).getMimeType();
@@ -122,7 +124,15 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(mimeType.contains("audio"))
         {
-           // AudioPlayer player=new AudioPlayer(view,?????);
+
+           AudioPlayer player=new AudioPlayer(layout, new Runnable(){
+               @Override
+               public void run() {
+                   finish();
+               }
+           });
+           player.setAudioUri(Uri.parse(ayuda));
+
         }
         if(mimeType.contains("video"))
         {
