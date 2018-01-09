@@ -59,14 +59,16 @@ public class Data {
         opcionFija4.setTexto("Nivel mínimo de la API Android requerida");
         opcionFija4.setCorrect(false);
         opcionFija4.setMimeType("video/mpeg");
-        opcionFija4.setAyuda("http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4");
+        //opcionFija4.setAyuda("http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4");
+        opcionFija4.setAyuda("http://techslides.com/demos/sample-videos/small.mp4");
         opcionesFijas.add(opcionFija4);
 
         Choice opcionFija5=new Choice();
         opcionFija5.setTexto("Nombre del paquete java de la aplicación");
         opcionFija5.setCorrect(false);
         opcionFija5.setMimeType("audio/mpeg3");
-        opcionFija5.setAyuda("http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4");
+        //opcionFija5.setAyuda("http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4");
+        opcionFija5.setAyuda("http://techslides.com/demos/sample-videos/small.mp4");
         opcionesFijas.add(opcionFija5);
         testFalso.setChoices(opcionesFijas);
         return testFalso;

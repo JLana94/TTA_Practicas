@@ -122,7 +122,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(mimeType.contains("audio"))
         {
-           // AudioPlayer player=new AudioPlayer(view, onStop());
+           // AudioPlayer player=new AudioPlayer(view,?????);
         }
         if(mimeType.contains("video"))
         {
