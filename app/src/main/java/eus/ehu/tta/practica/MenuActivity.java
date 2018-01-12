@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.view.View;
 
+import eus.ehu.tta.practica.modelo.Test;
+import eus.ehu.tta.practica.presentacion.ProgressTask;
+
 public class MenuActivity extends AppCompatActivity {
 
     public final static String LOGIN="loginUsuario";
@@ -20,8 +23,21 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void botonTest(View view) {
-        Intent intent=new Intent(this,TestActivity.class);
-        startActivity(intent);
+        /*Intent intent=new Intent(this,TestActivity.class);
+        startActivity(intent);*/
+
+        new ProgressTask<Test>(this){
+            @Override
+            protected Test work() throws Exception{
+                return null;//
+            }
+
+            @Override
+            protected void onFinish(Test result)
+            {
+                //
+            }
+        }.execute();
 
     }
 

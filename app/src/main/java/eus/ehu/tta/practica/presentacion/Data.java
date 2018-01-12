@@ -1,5 +1,7 @@
 package eus.ehu.tta.practica.presentacion;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class Data {
 
     public Test getTest() {
         //Esta parte es un apaño para poder tener contenido en esta parte
+
         Test testFalso=new Test();
         testFalso.setPregunta("¿Cuál de las siguientes opciones NO se indica en el fichero de manifiesto de la app?");
         //testFalso.setAdvise("<html><body>The manifest describes the <b>components of the application:</b> the activities, services, broadcast receivers, and content providers that the application is composed of. It names the classes that implement each of the component and publishes their capabilities (for example, which Intent messages they can handle). These declarations let the Android system know what the components are and under what conditions they can be launched.</body></html>");
