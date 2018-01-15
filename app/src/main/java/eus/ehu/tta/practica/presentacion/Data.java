@@ -23,19 +23,13 @@ import eus.ehu.tta.practica.modelo.Test;
 public class Data {
 
     private Test test=new Test();
-    private Exercise ejercicio;
+    private Exercise ejercicio=new Exercise();
     private final static String baseURL="http://u017633.ehu.eus:28080/ServidorTta/rest/tta";
     private final static String PATH_STATUS="getStatus?dni=";
     private final static String PATH_TEST="getTest?id=";
+    private final static String PATH_EXERCISE="getExercise?id=";
     private final static String SERVER_USER="12345678A";
     private final static String SERVER_PASS="tta";
-
-    public Exercise getEjercicio() {
-        Exercise ejercicioFalso=new Exercise();
-        ejercicioFalso.setPregunta("Explica cómo aplicarías el patrón de diseño MVP en el desarrollo de una app para Android");
-        return ejercicioFalso;
-        //return ejercicio;
-    }
 
     public void setEjercicio(Exercise ejercicio) {
         this.ejercicio = ejercicio;
@@ -55,10 +49,10 @@ public class Data {
         ClienteRest conexionServer=new ClienteRest(baseURL);
         conexionServer.setHttpBasicAuth(SERVER_USER,SERVER_PASS);
         try {
-            status=conexionServer.getString(PATH_STATUS+dni);
+            status=conexionServer.getJson(PATH_STATUS+dni);
             JSONObject jsonStatus=new JSONObject(status);
             nextTest=jsonStatus.getInt("nextTest");
-            testString=conexionServer.getString(PATH_TEST+String.valueOf(nextTest));
+            testString=conexionServer.getJson(PATH_TEST+String.valueOf(nextTest));
             jsonTest=new JSONObject(testString);
             test.setPregunta(jsonTest.getString("wording"));
 
@@ -102,4 +96,32 @@ public class Data {
     }
 
 
+    public Exercise getExercise(String dni) {
+
+        int nextExercise=0;
+        String status="No funciona";
+        String exerciseString;
+        JSONObject jsonExercise;
+
+        ClienteRest conexionServer=new ClienteRest(baseURL);
+        conexionServer.setHttpBasicAuth(SERVER_USER,SERVER_PASS);
+        try {
+            status=conexionServer.getJson(PATH_STATUS+dni);
+            JSONObject jsonStatus=new JSONObject(status);
+            nextExercise=jsonStatus.getInt("nextTest");
+            exerciseString=conexionServer.getJson(PATH_EXERCISE+String.valueOf(nextExercise));
+            jsonExercise=new JSONObject(exerciseString);
+            ejercicio.setPregunta(jsonExercise.getString("wording"));
+
+        } catch (IOException e) {
+            Log.d("error",e.getMessage());
+        } catch (JSONException e) {
+            Log.d("error",e.getMessage());
+        }
+
+
+
+        return ejercicio;
+
+    }
 }

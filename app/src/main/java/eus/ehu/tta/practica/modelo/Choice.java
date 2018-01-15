@@ -11,6 +11,7 @@ public class Choice implements Serializable{
     private String texto;
     private String mimeType;
     private String ayuda;
+    private int id;
 
     public String getMimeType() {
         return mimeType;
@@ -46,4 +47,11 @@ public class Choice implements Serializable{
     }
 
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

@@ -1,10 +1,12 @@
 package eus.ehu.tta.practica.modelo;
 
+import java.io.Serializable;
+
 /**
  * Created by josu on 26/12/17.
  */
 
-public class Exercise {
+public class Exercise implements Serializable{
     private String pregunta;
 
     public String getPregunta() {

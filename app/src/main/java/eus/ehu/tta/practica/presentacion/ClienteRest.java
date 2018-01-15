@@ -3,6 +3,8 @@ package eus.ehu.tta.practica.presentacion;
 import android.util.Base64;
 import android.util.Log;
 
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,7 +51,7 @@ public class ClienteRest {
         connection.setUseCaches(false);
         return connection;
     }
-    public String getString (String path) throws IOException
+    public String getJson (String path) throws IOException, JSONException
     {
         HttpURLConnection conn=null;
         try {

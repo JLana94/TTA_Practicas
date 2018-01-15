@@ -40,7 +40,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_test);
         Intent intent=getIntent();
         test=(Test)intent.getSerializableExtra(MenuActivity.TEST);
-        //test=data.getTest("12345678A");
         TextView pregunta= findViewById(R.id.testQuestion);
         pregunta.setText(test.getPregunta());
         RadioGroup choices= findViewById(R.id.testChoices);

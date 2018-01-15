@@ -40,8 +40,8 @@ public class EjercicioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ejercicio);
-        Data data=new Data();
-        Exercise ejer=data.getEjercicio();
+        Intent intent=getIntent();
+        Exercise ejer=(Exercise)intent.getSerializableExtra(MenuActivity.EXERCISE);
         TextView preguntaEjer=findViewById(R.id.preguntaEjer);
         preguntaEjer.setText(ejer.getPregunta());
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
