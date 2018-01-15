@@ -1,6 +1,7 @@
 package eus.ehu.tta.practica;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,12 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import org.json.JSONException;
+
 import java.io.IOException;
 
 import eus.ehu.tta.practica.modelo.Choice;
 import eus.ehu.tta.practica.modelo.Test;
 import eus.ehu.tta.practica.presentacion.AudioPlayer;
 import eus.ehu.tta.practica.presentacion.Data;
+import eus.ehu.tta.practica.presentacion.ProgressTask;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -33,6 +37,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     int correct;
     int selected;
     LinearLayout layout;
+    private String login;
     private Test test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +47,18 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         test=(Test)intent.getSerializableExtra(MenuActivity.TEST);
         TextView pregunta= findViewById(R.id.testQuestion);
         pregunta.setText(test.getPregunta());
+
+        SharedPreferences preferences=getSharedPreferences(MenuActivity.PREFERENCES,MODE_PRIVATE);
+        login=preferences.getString(MenuActivity.LOGIN,null);
+
+
         RadioGroup choices= findViewById(R.id.testChoices);
         int i=0;
         for(Choice choice : test.getChoices())
         {
             RadioButton opcion=new RadioButton(this);
+            opcion.setId(choice.getId());
+            Log.d("Control","ID: "+opcion.getId());
             opcion.setText(choice.getTexto());
             opcion.setOnClickListener(this);
             choices.addView(opcion);
@@ -62,6 +74,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     public void enviar(View view) {
 
         RadioGroup choices= findViewById(R.id.testChoices);
+
         findViewById(R.id.botonEnviar).setVisibility(View.GONE);
         int numOpciones=choices.getChildCount();
         for (int i=0;i<numOpciones;i++)
@@ -85,6 +98,32 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(getApplicationContext(),R.string.toastAcierto, LENGTH_SHORT).show();
 
         }
+
+        uploadChoice(login,choices.getChildAt(selected).getId());
+
+
+
+    }
+
+    private void uploadChoice(final String login, final int selected) {
+
+        final Data data=new Data();
+
+        new ProgressTask<Integer>(this){
+            @Override
+            protected Integer work() throws Exception{
+
+                return data.uploadChoice(login,selected);
+            }
+
+            @Override
+            protected void onFinish(Integer result)
+            {
+                Toast.makeText(context,"Codigo de respuesta: "+String.valueOf(result),Toast.LENGTH_SHORT).show();
+                Log.d("Control","Codigo de respuesta: "+String.valueOf(result));
+            }
+        }.execute();
+
     }
 
     @Override

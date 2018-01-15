@@ -63,6 +63,7 @@ public class Data {
                 JSONObject opcionJSON=opciones.getJSONObject(i);
                 opcion.setTexto(opcionJSON.getString("answer"));
                 opcion.setAyuda(opcionJSON.optString("advise",null));
+                opcion.setId(opcionJSON.getInt("id"));
                 JSONObject resourceType=opcionJSON.optJSONObject("resourceType");
                 if (resourceType!=null)
                 {
@@ -124,4 +125,36 @@ public class Data {
         return ejercicio;
 
     }
+
+    public int uploadChoice(String DNI, int choiceID) throws JSONException, IOException {
+        JSONObject json=new JSONObject();
+        int userID=getIDbyDNI(DNI);
+        json.put("userId",userID);
+        json.put("choiceId",choiceID);
+        ClienteRest conexionServer=new ClienteRest(baseURL);
+        conexionServer.setHttpBasicAuth(SERVER_USER,SERVER_PASS);
+        Log.d("Enviar respuesta","Usuario: "+userID+" Respuesta: "+choiceID);
+        return conexionServer.postChoice(json,"postChoice");
+
+    }
+
+    private int getIDbyDNI(String dni) {
+        ClienteRest conexionServer = new ClienteRest(baseURL);
+        conexionServer.setHttpBasicAuth(SERVER_USER, SERVER_PASS);
+        int userID=0;
+        try {
+            String status = conexionServer.getJson(PATH_STATUS + dni);
+            JSONObject jsonStatus = new JSONObject(status);
+            userID= jsonStatus.getInt("id");
+
+        } catch (IOException e) {
+            Log.d("error", e.getMessage());
+        } catch (JSONException e) {
+            Log.d("error", e.getMessage());
+        }
+        return userID;
+    }
+
+
+
 }
