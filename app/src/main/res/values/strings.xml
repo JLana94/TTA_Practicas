@@ -3,6 +3,7 @@
     <string name="user">Usuario</string>
     <string name="fillLogin">Introduce DNI</string>
     <string name="password">Contraseña</string>
+    <string name="wrongPassword">Contraseña incorrecta</string>
     <string name="fillPass">Introduce password</string>
     <string name="botonLogin">Acceder</string>
     <string name="loginTitle">Login</string>

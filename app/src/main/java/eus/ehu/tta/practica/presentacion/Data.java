@@ -1,7 +1,14 @@
 package eus.ehu.tta.practica.presentacion;
 
+import android.content.SharedPreferences;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +22,13 @@ import eus.ehu.tta.practica.modelo.Test;
 
 public class Data {
 
-    private Test test;
+    private Test test=new Test();
     private Exercise ejercicio;
+    private final static String baseURL="http://u017633.ehu.eus:28080/ServidorTta/rest/tta";
+    private final static String PATH_STATUS="getStatus?dni=";
+    private final static String PATH_TEST="getTest?id=";
+    private final static String SERVER_USER="12345678A";
+    private final static String SERVER_PASS="tta";
 
     public Exercise getEjercicio() {
         Exercise ejercicioFalso=new Exercise();
@@ -31,51 +43,58 @@ public class Data {
 
 
 
-    public Test getTest() {
-        //Esta parte es un apaño para poder tener contenido en esta parte
+    public Test getTest(String dni) {
 
-        Test testFalso=new Test();
-        testFalso.setPregunta("¿Cuál de las siguientes opciones NO se indica en el fichero de manifiesto de la app?");
-        //testFalso.setAdvise("<html><body>The manifest describes the <b>components of the application:</b> the activities, services, broadcast receivers, and content providers that the application is composed of. It names the classes that implement each of the component and publishes their capabilities (for example, which Intent messages they can handle). These declarations let the Android system know what the components are and under what conditions they can be launched.</body></html>");
-        List<Choice> opcionesFijas= new ArrayList<Choice>(5);
-        Choice opcionFija1=new Choice();
-        opcionFija1.setTexto("Versión de la aplicación");
-        opcionFija1.setCorrect(false);
-        opcionFija1.setMimeType("text/html");
-        opcionFija1.setAyuda("https://developer.android.com/studio/publish/versioning.html?hl=es-419");
-        opcionesFijas.add(opcionFija1);
+        int nextTest=0;
+        String status="No funciona";
+        String testString;
+        JSONObject jsonTest;
+        List<Choice> choices=new ArrayList<Choice>();
 
-        Choice opcionFija2=new Choice();
-        opcionFija2.setTexto("Listado de componentes de la aplicación");
-        opcionFija2.setCorrect(false);
-        opcionFija2.setMimeType("text/html");
-        opcionFija2.setAyuda("<html><body>The manifest describes the <b>components of the application:</b> the activities, services, broadcast receivers, and content providers that the application is composed of. It names the classes that implement each of the component and publishes their capabilities (for example, which Intent messages they can handle). These declarations let the Android system know what the components are and under what conditions they can be launched.</body></html>");
-        opcionesFijas.add(opcionFija2);
 
-        Choice opcionFija3=new Choice();
-        opcionFija3.setTexto("Opciones del menú de ajustes");
-        opcionFija3.setCorrect(true);
-        opcionFija3.setAyuda(null);
-        opcionesFijas.add(opcionFija3);
+        ClienteRest conexionServer=new ClienteRest(baseURL);
+        conexionServer.setHttpBasicAuth(SERVER_USER,SERVER_PASS);
+        try {
+            status=conexionServer.getString(PATH_STATUS+dni);
+            JSONObject jsonStatus=new JSONObject(status);
+            nextTest=jsonStatus.getInt("nextTest");
+            testString=conexionServer.getString(PATH_TEST+String.valueOf(nextTest));
+            jsonTest=new JSONObject(testString);
+            test.setPregunta(jsonTest.getString("wording"));
 
-        Choice opcionFija4=new Choice();
-        opcionFija4.setTexto("Nivel mínimo de la API Android requerida");
-        opcionFija4.setCorrect(false);
-        opcionFija4.setMimeType("video/mpeg");
-        //opcionFija4.setAyuda("http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4");
-        opcionFija4.setAyuda("http://techslides.com/demos/sample-videos/small.mp4");
-        opcionesFijas.add(opcionFija4);
+            JSONArray opciones=jsonTest.getJSONArray("choices");
+            for (int i=0;i<opciones.length();i++)
+            {
+                Choice opcion=new Choice();
+                JSONObject opcionJSON=opciones.getJSONObject(i);
+                opcion.setTexto(opcionJSON.getString("answer"));
+                opcion.setAyuda(opcionJSON.optString("advise",null));
+                JSONObject resourceType=opcionJSON.optJSONObject("resourceType");
+                if (resourceType!=null)
+                {
+                    opcion.setMimeType(resourceType.optString("mime",null));
+                }
+                else
+                    opcion.setMimeType(null);
 
-        Choice opcionFija5=new Choice();
-        opcionFija5.setTexto("Nombre del paquete java de la aplicación");
-        opcionFija5.setCorrect(false);
-        opcionFija5.setMimeType("audio/mpeg3");
-        //opcionFija5.setAyuda("http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4");
-        opcionFija5.setAyuda("http://techslides.com/demos/sample-videos/small.mp4");
-        opcionesFijas.add(opcionFija5);
-        testFalso.setChoices(opcionesFijas);
-        return testFalso;
-        //return test;
+                opcion.setCorrect(opcionJSON.getBoolean("correct"));
+                choices.add(opcion);
+            }
+            test.setChoices(choices);
+
+
+        } catch (IOException e) {
+            Log.d("error",e.getMessage());
+        } catch (JSONException e) {
+            Log.d("error",e.getMessage());
+        }
+
+
+
+        return test;
+
+
+
     }
 
     public void setTest(Test test) {

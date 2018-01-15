@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +33,14 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     int correct;
     int selected;
     LinearLayout layout;
+    private Test test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        Data data=new Data();
-        Test test=data.getTest();
+        Intent intent=getIntent();
+        test=(Test)intent.getSerializableExtra(MenuActivity.TEST);
+        //test=data.getTest("12345678A");
         TextView pregunta= findViewById(R.id.testQuestion);
         pregunta.setText(test.getPregunta());
         RadioGroup choices= findViewById(R.id.testChoices);
@@ -59,10 +62,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     public void enviar(View view) {
 
-        Data data=new Data();
-        Test test=data.getTest();
-
-
         RadioGroup choices= findViewById(R.id.testChoices);
         findViewById(R.id.botonEnviar).setVisibility(View.GONE);
         int numOpciones=choices.getChildCount();
@@ -80,18 +79,13 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         {
             choices.getChildAt(selected).setBackgroundColor(Color.RED);
             Toast.makeText(getApplicationContext(),R.string.toastFallo, LENGTH_SHORT).show();
+            findViewById(R.id.botonAyuda).setVisibility(View.VISIBLE);
         }
         else
         {
             Toast.makeText(getApplicationContext(),R.string.toastAcierto, LENGTH_SHORT).show();
+
         }
-        if(test.getChoices().get(selected).getAyuda()!=null)
-        {
-            findViewById(R.id.botonAyuda).setVisibility(View.VISIBLE);
-        }
-
-
-
     }
 
     @Override
@@ -100,15 +94,14 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void verAyuda(View view) throws IOException {
-        Data data=new Data();
         Button botonAyuda=findViewById(R.id.botonAyuda);
         botonAyuda.setEnabled(false);
-        Test test=data.getTest();
         String mimeType=test.getChoices().get(selected).getMimeType();
         String ayuda=test.getChoices().get(selected).getAyuda();
 
-        if(mimeType=="text/html")
+        if(mimeType.equals("text/html"))
         {
+
             if (ayuda.substring(0,10).contains("://"))
             {
                 Uri uri= Uri.parse(ayuda);

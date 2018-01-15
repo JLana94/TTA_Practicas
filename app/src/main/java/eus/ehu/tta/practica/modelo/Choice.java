@@ -1,11 +1,16 @@
 package eus.ehu.tta.practica.modelo;
 
+import java.io.Serializable;
+
 /**
  * Created by josu on 26/12/17.
  */
 
-public class Choice {
+public class Choice implements Serializable{
     private boolean correct;
+    private String texto;
+    private String mimeType;
+    private String ayuda;
 
     public String getMimeType() {
         return mimeType;
@@ -23,8 +28,6 @@ public class Choice {
         this.ayuda = ayuda;
     }
 
-    private String mimeType;
-    private String ayuda;
 
     public boolean isCorrect() {
         return correct;
@@ -42,5 +45,5 @@ public class Choice {
         this.texto = texto;
     }
 
-    private String texto;
+
 }

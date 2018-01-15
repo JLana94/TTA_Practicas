@@ -1,5 +1,6 @@
 package eus.ehu.tta.practica.modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by josu on 26/12/17.
  */
 
-public class Test {
+public class Test implements Serializable{
     private String pregunta;
 
     private List<Choice> choices;
