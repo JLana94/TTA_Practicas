@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class Exercise implements Serializable{
     private String pregunta;
+    private int id;
 
     public String getPregunta() {
         return pregunta;
@@ -18,5 +19,11 @@ public class Exercise implements Serializable{
     }
 
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }

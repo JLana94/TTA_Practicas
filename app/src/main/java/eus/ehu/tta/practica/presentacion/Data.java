@@ -7,7 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +115,7 @@ public class Data {
             exerciseString=conexionServer.getJson(PATH_EXERCISE+String.valueOf(nextExercise));
             jsonExercise=new JSONObject(exerciseString);
             ejercicio.setPregunta(jsonExercise.getString("wording"));
+            ejercicio.setId(jsonExercise.getInt("id"));
 
         } catch (IOException e) {
             Log.d("error",e.getMessage());
@@ -153,6 +156,22 @@ public class Data {
             Log.d("error", e.getMessage());
         }
         return userID;
+    }
+
+    public int enviarFichero(String login, int exerciseID, InputStream inputStream, String filename)
+    {
+        int responseCode=0;
+        ClienteRest conexionServer = new ClienteRest(baseURL);
+        conexionServer.setHttpBasicAuth(SERVER_USER, SERVER_PASS);
+        int userID=getIDbyDNI(login);
+        String path="postExercise?user="+userID+"&id="+exerciseID;
+        try {
+            responseCode=conexionServer.postFile(path,inputStream,filename);
+        } catch (IOException e) {
+            Log.d("Error",e.getMessage());
+        }
+        return responseCode;
+
     }
 
 

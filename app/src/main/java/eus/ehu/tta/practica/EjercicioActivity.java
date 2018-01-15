@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -23,14 +25,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import eus.ehu.tta.practica.modelo.Exercise;
 import eus.ehu.tta.practica.presentacion.Data;
+import eus.ehu.tta.practica.presentacion.ProgressTask;
 
 public class EjercicioActivity extends AppCompatActivity {
 
     private Uri pictureUri;
+    private String login;
+    private int exerciseID;
     private final int PICTURE_REQUEST_CODE=1;
     private final int VIDEO_REQUEST_CODE=2;
     private final int AUDIO_REQUEST_CODE=3;
@@ -42,6 +50,9 @@ public class EjercicioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ejercicio);
         Intent intent=getIntent();
         Exercise ejer=(Exercise)intent.getSerializableExtra(MenuActivity.EXERCISE);
+        SharedPreferences preferences=getSharedPreferences(MenuActivity.PREFERENCES,MODE_PRIVATE);
+        login=preferences.getString(MenuActivity.LOGIN,null);
+        exerciseID=ejer.getId();
         TextView preguntaEjer=findViewById(R.id.preguntaEjer);
         preguntaEjer.setText(ejer.getPregunta());
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -157,16 +168,93 @@ public class EjercicioActivity extends AppCompatActivity {
         switch (requestCode){
             case READ_REQUEST_CODE:
                 mostrarDatos(data.getData());
+                sendFile(data.getData());
             case VIDEO_REQUEST_CODE:
             case AUDIO_REQUEST_CODE:
-            //    sendFile(data.getData());
+                sendFile(data.getData());
                 break;//Esto luego quitar
             case PICTURE_REQUEST_CODE:
-                //sendFile(pictureUri);
+                sendPhoto(pictureUri);
                 break;
 
         }
     }
+
+    private void sendPhoto(Uri uri) {
+        final Data data =new Data();
+        File file = new File(uri.toString());
+        String filename=file.getName();
+        Log.d("Control",filename);
+        InputStream is=null;
+        try {
+            is=new FileInputStream(file);
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        final InputStream finalIs = is;
+        final String finalFilename = filename;
+        new ProgressTask<Integer>(this){
+            @Override
+            protected Integer work() throws Exception{
+
+                return data.enviarFichero(login,exerciseID, finalIs, finalFilename);
+            }
+
+            @Override
+            protected void onFinish(Integer result)
+            {
+                Toast.makeText(context,"Codigo de respuesta: "+String.valueOf(result),Toast.LENGTH_SHORT);
+                Log.d("Control","Codigo de respuesta: "+String.valueOf(result));
+
+            }
+        }.execute();
+    }
+
+    private void sendFile(Uri uri) {
+
+        final Data data =new Data();
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
+        String filename=null;
+        InputStream is=null;
+        try {
+            is=getContentResolver().openInputStream(uri);
+
+            if (cursor != null && cursor.moveToFirst()) {
+
+                filename = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            cursor.close();
+
+        }
+
+
+        final InputStream finalIs = is;
+        final String finalFilename = filename;
+        new ProgressTask<Integer>(this){
+            @Override
+            protected Integer work() throws Exception{
+
+                return data.enviarFichero(login,exerciseID, finalIs, finalFilename);
+            }
+
+            @Override
+            protected void onFinish(Integer result)
+            {
+                Toast.makeText(context,"Codigo de respuesta: "+String.valueOf(result),Toast.LENGTH_SHORT);
+                Log.d("Control","Codigo de respuesta: "+String.valueOf(result));
+
+            }
+        }.execute();
+    }
+
     private void mostrarDatos(Uri uri)
      {
          String nombre="ERROR!";
