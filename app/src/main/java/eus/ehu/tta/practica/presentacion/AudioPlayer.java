@@ -89,7 +89,6 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
     public boolean isPlaying() {
         return player.isPlaying();
     }
-    //DUDA: a partir de aqui no tengo claro si están bien los metodos que hay que sobreescribir
     @Override
     public int getBufferPercentage() {
         return 0;

@@ -182,9 +182,12 @@ public class EjercicioActivity extends AppCompatActivity {
 
     private void sendPhoto(Uri uri) {
         final Data data =new Data();
-        File file = new File(uri.toString());
+        String uriAcotada=uri.toString().substring(7);
+        Log.d("Control",uriAcotada);
+        File file = new File(uriAcotada);
         String filename=file.getName();
-        Log.d("Control",filename);
+
+
         InputStream is=null;
         try {
             is=new FileInputStream(file);
@@ -206,7 +209,7 @@ public class EjercicioActivity extends AppCompatActivity {
             @Override
             protected void onFinish(Integer result)
             {
-                Toast.makeText(context,"Codigo de respuesta: "+String.valueOf(result),Toast.LENGTH_SHORT);
+                Toast.makeText(context,"Codigo de respuesta: "+String.valueOf(result),Toast.LENGTH_SHORT).show();
                 Log.d("Control","Codigo de respuesta: "+String.valueOf(result));
 
             }
@@ -248,9 +251,8 @@ public class EjercicioActivity extends AppCompatActivity {
             @Override
             protected void onFinish(Integer result)
             {
-                Toast.makeText(context,"Codigo de respuesta: "+String.valueOf(result),Toast.LENGTH_SHORT);
                 Log.d("Control","Codigo de respuesta: "+String.valueOf(result));
-
+                Toast.makeText(context,"Codigo de respuesta: "+String.valueOf(result),Toast.LENGTH_SHORT).show();
             }
         }.execute();
     }
