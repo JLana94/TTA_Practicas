@@ -8,10 +8,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import eus.ehu.tta.practica.modelo.User;
+import eus.ehu.tta.practica.modelo.Server;
+import eus.ehu.tta.practica.presentacion.NetworkChecker;
+import eus.ehu.tta.practica.presentacion.ProgressTask;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private final String loginCte ="12345678A";
-    private final String passCte="tta";
+    public static final String USER="user";
+    public static final String PASS="pass";
+    public static final String LOGIN="login";
+    public static final String USER_ID="userID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,29 +27,44 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
-        Intent intent=new Intent(this,MenuActivity.class);
-        String login=((EditText)findViewById(R.id.login)).getText().toString();
-        String pass=((EditText)findViewById(R.id.pass)).getText().toString();
-        if (autenticar(login,pass))
+        final Intent intent=new Intent(this,MenuActivity.class);
+        final String login=((EditText)findViewById(R.id.login)).getText().toString();
+        final String pass=((EditText)findViewById(R.id.pass)).getText().toString();
+        final Server server=new Server();
+
+        NetworkChecker networkChecker=new NetworkChecker(this);
+        if (networkChecker.checkConexion())
         {
-            saveLogin(login);
-            startActivity(intent);
+            new ProgressTask<User>(this){
+                @Override
+                protected User work() throws Exception{
+
+                    return server.getUser(login,pass);
+                }
+
+                @Override
+                protected void onFinish(User result)
+                {
+                    if (result!=null)
+                    {
+                        intent.putExtra(USER,result);
+                        intent.putExtra(PASS,pass);
+                        intent.putExtra(LOGIN,login);
+                        startActivity(intent);
+                    }
+                    else
+                        Toast.makeText(context,R.string.wrongPassword,Toast.LENGTH_SHORT).show();
+
+
+                }
+            }.execute();
+
         }
         else
-            Toast.makeText(this,R.string.wrongPassword,Toast.LENGTH_SHORT).show();
-    }
-     private boolean autenticar(String login, String pass)
-     {
-         boolean check=false;
-         if(login.equals(loginCte)&& pass.equals(passCte))
-            check=true;
-         return check;
+            Toast.makeText(this,R.string.noConexion,Toast.LENGTH_SHORT).show();
+
+
+
      }
-     private void saveLogin(String login)
-     {
-         SharedPreferences preferences=getSharedPreferences(MenuActivity.PREFERENCES,MODE_PRIVATE);
-         SharedPreferences.Editor editor=preferences.edit();
-         editor.putString(MenuActivity.LOGIN,login);
-         editor.commit();
-     }
+
 }

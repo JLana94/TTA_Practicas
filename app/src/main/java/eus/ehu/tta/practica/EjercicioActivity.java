@@ -7,14 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,13 +28,15 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import eus.ehu.tta.practica.modelo.Exercise;
-import eus.ehu.tta.practica.presentacion.Data;
+import eus.ehu.tta.practica.modelo.Server;
 import eus.ehu.tta.practica.presentacion.ProgressTask;
 
 public class EjercicioActivity extends AppCompatActivity {
 
     private Uri pictureUri;
     private String login;
+    private String pass;
+    private int userID;
     private int exerciseID;
     private final int PICTURE_REQUEST_CODE=1;
     private final int VIDEO_REQUEST_CODE=2;
@@ -50,8 +49,9 @@ public class EjercicioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ejercicio);
         Intent intent=getIntent();
         Exercise ejer=(Exercise)intent.getSerializableExtra(MenuActivity.EXERCISE);
-        SharedPreferences preferences=getSharedPreferences(MenuActivity.PREFERENCES,MODE_PRIVATE);
-        login=preferences.getString(MenuActivity.LOGIN,null);
+        userID=intent.getIntExtra(LoginActivity.USER_ID,0);
+        login=intent.getStringExtra(LoginActivity.LOGIN);
+        pass=intent.getStringExtra(LoginActivity.PASS);
         exerciseID=ejer.getId();
         TextView preguntaEjer=findViewById(R.id.preguntaEjer);
         preguntaEjer.setText(ejer.getPregunta());
@@ -181,9 +181,8 @@ public class EjercicioActivity extends AppCompatActivity {
     }
 
     private void sendPhoto(Uri uri) {
-        final Data data =new Data();
+        final Server server =new Server();
         String uriAcotada=uri.toString().substring(7);
-        Log.d("Control",uriAcotada);
         File file = new File(uriAcotada);
         String filename=file.getName();
 
@@ -203,14 +202,17 @@ public class EjercicioActivity extends AppCompatActivity {
             @Override
             protected Integer work() throws Exception{
 
-                return data.enviarFichero(login,exerciseID, finalIs, finalFilename);
+                return server.enviarFichero(userID,exerciseID, finalIs, finalFilename,login,pass);
             }
 
             @Override
             protected void onFinish(Integer result)
             {
-                Toast.makeText(context,"Codigo de respuesta: "+String.valueOf(result),Toast.LENGTH_SHORT).show();
-                Log.d("Control","Codigo de respuesta: "+String.valueOf(result));
+                if(result==204)
+                {
+                    Toast.makeText(context,"Subido correctamente",Toast.LENGTH_SHORT).show();
+
+                }
 
             }
         }.execute();
@@ -218,7 +220,7 @@ public class EjercicioActivity extends AppCompatActivity {
 
     private void sendFile(Uri uri) {
 
-        final Data data =new Data();
+        final Server data =new Server();
         Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
         String filename=null;
         InputStream is=null;
@@ -245,14 +247,17 @@ public class EjercicioActivity extends AppCompatActivity {
             @Override
             protected Integer work() throws Exception{
 
-                return data.enviarFichero(login,exerciseID, finalIs, finalFilename);
+                return data.enviarFichero(userID,exerciseID, finalIs, finalFilename,login,pass);
             }
 
             @Override
             protected void onFinish(Integer result)
             {
-                Log.d("Control","Codigo de respuesta: "+String.valueOf(result));
-                Toast.makeText(context,"Codigo de respuesta: "+String.valueOf(result),Toast.LENGTH_SHORT).show();
+                if(result==204)
+                {
+                    Toast.makeText(context,"Subido correctamente",Toast.LENGTH_SHORT).show();
+
+                }
             }
         }.execute();
     }

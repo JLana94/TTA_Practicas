@@ -20,14 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import org.json.JSONException;
-
 import java.io.IOException;
 
 import eus.ehu.tta.practica.modelo.Choice;
 import eus.ehu.tta.practica.modelo.Test;
 import eus.ehu.tta.practica.presentacion.AudioPlayer;
-import eus.ehu.tta.practica.presentacion.Data;
+import eus.ehu.tta.practica.modelo.Server;
 import eus.ehu.tta.practica.presentacion.ProgressTask;
 
 import static android.widget.Toast.LENGTH_SHORT;
@@ -38,7 +36,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     int selected;
     LinearLayout layout;
     private String login;
+    private String pass;
     private Test test;
+    private int userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +48,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         TextView pregunta= findViewById(R.id.testQuestion);
         pregunta.setText(test.getPregunta());
 
-        SharedPreferences preferences=getSharedPreferences(MenuActivity.PREFERENCES,MODE_PRIVATE);
-        login=preferences.getString(MenuActivity.LOGIN,null);
+        userID=intent.getIntExtra(LoginActivity.USER_ID,0);
+        login=intent.getStringExtra(LoginActivity.LOGIN);
+        pass=intent.getStringExtra(LoginActivity.PASS);
 
 
         RadioGroup choices= findViewById(R.id.testChoices);
@@ -58,7 +59,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         {
             RadioButton opcion=new RadioButton(this);
             opcion.setId(choice.getId());
-            Log.d("Control","ID: "+opcion.getId());
             opcion.setText(choice.getTexto());
             opcion.setOnClickListener(this);
             choices.addView(opcion);
@@ -107,20 +107,23 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     private void uploadChoice(final String login, final int selected) {
 
-        final Data data=new Data();
+        final Server server=new Server();
 
         new ProgressTask<Integer>(this){
             @Override
             protected Integer work() throws Exception{
 
-                return data.uploadChoice(login,selected);
+                return server.uploadChoice(userID,selected,login,pass);
             }
 
             @Override
             protected void onFinish(Integer result)
             {
-                Toast.makeText(context,"Codigo de respuesta: "+String.valueOf(result),Toast.LENGTH_SHORT).show();
-                Log.d("Control","Codigo de respuesta: "+String.valueOf(result));
+                if(result==204)
+                {
+                    Toast.makeText(context,"Respuesta enviada al servidor",Toast.LENGTH_SHORT).show();
+
+                }
             }
         }.execute();
 

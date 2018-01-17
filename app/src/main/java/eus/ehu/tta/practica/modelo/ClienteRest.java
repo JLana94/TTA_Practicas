@@ -1,7 +1,6 @@
-package eus.ehu.tta.practica.presentacion;
+package eus.ehu.tta.practica.modelo;
 
 import android.util.Base64;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,7 +78,7 @@ public class ClienteRest {
         }
     }
 
-    public int postChoice(final JSONObject json, String path) throws IOException
+    public int postJSON(final JSONObject json, String path) throws IOException
     {
         HttpURLConnection conn=null;
         try

@@ -7,6 +7,7 @@
     <string name="fillPass">Introduce password</string>
     <string name="botonLogin">Acceder</string>
     <string name="loginTitle">Login</string>
+    <string name="seguimientoTitle">Seguimiento</string>
     <string name="menuTitle">Menú</string>
     <string name="testTitle">Nuevo Test</string>
     <string name="ejercicioTitle">Nuevo Ejercicio</string>
@@ -28,4 +29,5 @@
     <string name="sinMicro">Lo siento, tú teléfono no tiene microfono</string>
     <string name="sinAppMicro">Lo siento, no tienes ninguna app que grabe audio</string>
     <string name="permisoDenegado">Lo siento, no tengo los permisos necesarios</string>
+    <string name="noConexion">Lo siento, no tienes conexion a Internet</string>
 </resources>
