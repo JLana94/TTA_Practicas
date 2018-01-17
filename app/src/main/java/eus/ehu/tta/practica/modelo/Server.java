@@ -17,25 +17,16 @@ import java.util.List;
 
 public class Server {
 
-    private Test test=new Test();
-    private Exercise ejercicio=new Exercise();
-
     private final static String baseURL="http://u017633.ehu.eus:28080/ServidorTta/rest/tta";
     private final static String PATH_STATUS="getStatus?dni=";
     private final static String PATH_TEST="getTest?id=";
     private final static String PATH_EXERCISE="getExercise?id=";
 
-    public void setEjercicio(Exercise ejercicio) {
-        this.ejercicio = ejercicio;
-    }
-
-
-
     public Test getTest(int id, String login, String pass) {
         String testString;
         JSONObject jsonTest;
         List<Choice> choices=new ArrayList<Choice>();
-
+        Test test=new Test();
 
         ClienteRest conexionServer=new ClienteRest(baseURL);
         conexionServer.setHttpBasicAuth(login,pass);
@@ -71,13 +62,7 @@ public class Server {
         } catch (JSONException e) {
             Log.d("error",e.getMessage());
         }
-
-
-
         return test;
-
-
-
     }
 
     public User getUser(String dni, String pass) {
@@ -116,15 +101,11 @@ public class Server {
 
     }
 
-    public void setTest(Test test) {
-        this.test = test;
-    }
-
-
     public Exercise getExercise(int id,String login,String pass) {
 
         String exerciseString;
         JSONObject jsonExercise;
+        Exercise ejercicio=new Exercise();
 
         ClienteRest conexionServer=new ClienteRest(baseURL);
         conexionServer.setHttpBasicAuth(login,pass);

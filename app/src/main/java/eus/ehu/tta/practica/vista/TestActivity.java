@@ -1,12 +1,10 @@
-package eus.ehu.tta.practica;
+package eus.ehu.tta.practica.vista;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +20,12 @@ import android.widget.VideoView;
 
 import java.io.IOException;
 
+import eus.ehu.tta.practica.R;
 import eus.ehu.tta.practica.modelo.Choice;
 import eus.ehu.tta.practica.modelo.Test;
 import eus.ehu.tta.practica.presentacion.AudioPlayer;
 import eus.ehu.tta.practica.modelo.Server;
+import eus.ehu.tta.practica.presentacion.NetworkChecker;
 import eus.ehu.tta.practica.presentacion.ProgressTask;
 
 import static android.widget.Toast.LENGTH_SHORT;
@@ -109,23 +109,27 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
         final Server server=new Server();
 
-        new ProgressTask<Integer>(this){
-            @Override
-            protected Integer work() throws Exception{
+        NetworkChecker networkChecker=new NetworkChecker(this);
+        if (networkChecker.checkConexion()) {
+            new ProgressTask<Integer>(this) {
+                @Override
+                protected Integer work() throws Exception {
 
-                return server.uploadChoice(userID,selected,login,pass);
-            }
-
-            @Override
-            protected void onFinish(Integer result)
-            {
-                if(result==204)
-                {
-                    Toast.makeText(context,"Respuesta enviada al servidor",Toast.LENGTH_SHORT).show();
-
+                    return server.uploadChoice(userID, selected, login, pass);
                 }
-            }
-        }.execute();
+
+                @Override
+                protected void onFinish(Integer result) {
+                    if (result == 204) {
+                        Toast.makeText(context, R.string.respuestaToServer, Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }.execute();
+        }
+        else
+            Toast.makeText(this,R.string.noConexionSubir,Toast.LENGTH_SHORT).show();
+
 
     }
 

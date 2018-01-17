@@ -1,10 +1,9 @@
-package eus.ehu.tta.practica;
+package eus.ehu.tta.practica.vista;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,7 +15,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +25,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import eus.ehu.tta.practica.R;
 import eus.ehu.tta.practica.modelo.Exercise;
 import eus.ehu.tta.practica.modelo.Server;
+import eus.ehu.tta.practica.presentacion.NetworkChecker;
 import eus.ehu.tta.practica.presentacion.ProgressTask;
 
 public class EjercicioActivity extends AppCompatActivity {
@@ -60,46 +60,80 @@ public class EjercicioActivity extends AppCompatActivity {
     }
 
     public void subirFoto(View view){
-        checkPermission();
+        NetworkChecker networkChecker=new NetworkChecker(this);
+        if (networkChecker.checkConexion()) {
+            checkPermission();
+        }
+        else
+            Toast.makeText(this,R.string.noConexion,Toast.LENGTH_SHORT).show();
+
+
+
     }
 
     public void subirFichero(View view){
-        Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("*/*");
-        startActivityForResult(intent,READ_REQUEST_CODE);
+
+        NetworkChecker networkChecker=new NetworkChecker(this);
+        if (networkChecker.checkConexion()) {
+            Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            startActivityForResult(intent,READ_REQUEST_CODE);
+
+        }
+        else
+            Toast.makeText(this,R.string.noConexion,Toast.LENGTH_SHORT).show();
+
+
+
+
 
     }
     public void subirAudio(View view){
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE))
-        {
-            Toast.makeText(this,R.string.sinMicro,Toast.LENGTH_SHORT).show();
+
+        NetworkChecker networkChecker=new NetworkChecker(this);
+        if (networkChecker.checkConexion()) {
+            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE))
+            {
+                Toast.makeText(this,R.string.sinMicro,Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Intent intent=new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+                if(intent.resolveActivity(getPackageManager())!=null)
+                    startActivityForResult(intent,AUDIO_REQUEST_CODE);
+                else
+                    Toast.makeText(this,R.string.sinAppMicro,Toast.LENGTH_SHORT).show();
+
+            }
         }
         else
-        {
-            Intent intent=new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
-            if(intent.resolveActivity(getPackageManager())!=null)
-                startActivityForResult(intent,AUDIO_REQUEST_CODE);
-            else
-                Toast.makeText(this,R.string.sinAppMicro,Toast.LENGTH_SHORT).show();
-
-        }
+            Toast.makeText(this,R.string.noConexion,Toast.LENGTH_SHORT).show();
 
     }
     public void subirVideo(View view){
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
-        {
-            Toast.makeText(this,R.string.sinCamara,Toast.LENGTH_SHORT).show();
+
+        NetworkChecker networkChecker=new NetworkChecker(this);
+        if (networkChecker.checkConexion()) {
+            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
+            {
+                Toast.makeText(this,R.string.sinCamara,Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Intent intent=new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                if(intent.resolveActivity(getPackageManager())!=null)
+                    startActivityForResult(intent,VIDEO_REQUEST_CODE);
+                else
+                    Toast.makeText(this,R.string.sinAppCamara,Toast.LENGTH_SHORT).show();
+
+            }
         }
         else
-        {
-            Intent intent=new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-            if(intent.resolveActivity(getPackageManager())!=null)
-                startActivityForResult(intent,VIDEO_REQUEST_CODE);
-            else
-                Toast.makeText(this,R.string.sinAppCamara,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.noConexion,Toast.LENGTH_SHORT).show();
 
-        }
+
+
     }
 
     public void sacarFoto(){
@@ -169,10 +203,11 @@ public class EjercicioActivity extends AppCompatActivity {
             case READ_REQUEST_CODE:
                 mostrarDatos(data.getData());
                 sendFile(data.getData());
+                break;
             case VIDEO_REQUEST_CODE:
             case AUDIO_REQUEST_CODE:
                 sendFile(data.getData());
-                break;//Esto luego quitar
+                break;
             case PICTURE_REQUEST_CODE:
                 sendPhoto(pictureUri);
                 break;
@@ -210,7 +245,7 @@ public class EjercicioActivity extends AppCompatActivity {
             {
                 if(result==204)
                 {
-                    Toast.makeText(context,"Subido correctamente",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,R.string.subidaCorrecta,Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -255,7 +290,7 @@ public class EjercicioActivity extends AppCompatActivity {
             {
                 if(result==204)
                 {
-                    Toast.makeText(context,"Subido correctamente",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,R.string.subidaCorrecta,Toast.LENGTH_SHORT).show();
 
                 }
             }

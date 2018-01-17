@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".vista.LoginActivity"
             android:label="@string/loginTitle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,13 +31,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MenuActivity"
+            android:name=".vista.MenuActivity"
             android:label="@string/menuTitle" />
         <activity
-            android:name=".TestActivity"
+            android:name=".vista.TestActivity"
             android:label="@string/testTitle" />
         <activity
-            android:name=".EjercicioActivity"
+            android:name=".vista.EjercicioActivity"
             android:label="@string/ejercicioTitle" />
     </application>
 

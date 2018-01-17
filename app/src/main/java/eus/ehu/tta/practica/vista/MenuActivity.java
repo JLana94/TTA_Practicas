@@ -1,13 +1,13 @@
-package eus.ehu.tta.practica;
+package eus.ehu.tta.practica.vista;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
+import eus.ehu.tta.practica.R;
 import eus.ehu.tta.practica.modelo.Exercise;
 import eus.ehu.tta.practica.modelo.Test;
 import eus.ehu.tta.practica.modelo.User;

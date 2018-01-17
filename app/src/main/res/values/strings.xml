@@ -30,4 +30,7 @@
     <string name="sinAppMicro">Lo siento, no tienes ninguna app que grabe audio</string>
     <string name="permisoDenegado">Lo siento, no tengo los permisos necesarios</string>
     <string name="noConexion">Lo siento, no tienes conexion a Internet</string>
+    <string name="noConexionSubir">Lo siento, no tienes conexion a Internet para subir la respuesta</string>
+    <string name="subidaCorrecta">Subido correctamente</string>
+    <string name="respuestaToServer">Respuesta enviada al servidor</string>
 </resources>
