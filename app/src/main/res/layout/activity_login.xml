@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="eus.ehu.tta.practica.vista.LoginActivity"
+    tools:context="eus.ehu.tta.practica.presentacion.LoginActivity"
     android:orientation="vertical">
         <GridLayout
             android:layout_width="match_parent"

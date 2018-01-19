@@ -1,4 +1,4 @@
-package eus.ehu.tta.practica.vista;
+package eus.ehu.tta.practica.presentacion;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,10 +23,7 @@ import java.io.IOException;
 import eus.ehu.tta.practica.R;
 import eus.ehu.tta.practica.modelo.Choice;
 import eus.ehu.tta.practica.modelo.Test;
-import eus.ehu.tta.practica.presentacion.AudioPlayer;
 import eus.ehu.tta.practica.modelo.Server;
-import eus.ehu.tta.practica.presentacion.NetworkChecker;
-import eus.ehu.tta.practica.presentacion.ProgressTask;
 
 import static android.widget.Toast.LENGTH_SHORT;
 

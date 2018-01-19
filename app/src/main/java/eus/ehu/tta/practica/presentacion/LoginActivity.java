@@ -1,4 +1,4 @@
-package eus.ehu.tta.practica.vista;
+package eus.ehu.tta.practica.presentacion;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +10,6 @@ import android.widget.Toast;
 import eus.ehu.tta.practica.R;
 import eus.ehu.tta.practica.modelo.User;
 import eus.ehu.tta.practica.modelo.Server;
-import eus.ehu.tta.practica.presentacion.NetworkChecker;
-import eus.ehu.tta.practica.presentacion.ProgressTask;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package eus.ehu.tta.practica.vista;
+package eus.ehu.tta.practica.presentacion;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -28,8 +28,6 @@ import java.io.InputStream;
 import eus.ehu.tta.practica.R;
 import eus.ehu.tta.practica.modelo.Exercise;
 import eus.ehu.tta.practica.modelo.Server;
-import eus.ehu.tta.practica.presentacion.NetworkChecker;
-import eus.ehu.tta.practica.presentacion.ProgressTask;
 
 public class EjercicioActivity extends AppCompatActivity {
 

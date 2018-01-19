@@ -1,4 +1,4 @@
-package eus.ehu.tta.practica.vista;
+package eus.ehu.tta.practica.presentacion;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +12,6 @@ import eus.ehu.tta.practica.modelo.Exercise;
 import eus.ehu.tta.practica.modelo.Test;
 import eus.ehu.tta.practica.modelo.User;
 import eus.ehu.tta.practica.modelo.Server;
-import eus.ehu.tta.practica.presentacion.NetworkChecker;
-import eus.ehu.tta.practica.presentacion.ProgressTask;
 
 public class MenuActivity extends AppCompatActivity {
 
